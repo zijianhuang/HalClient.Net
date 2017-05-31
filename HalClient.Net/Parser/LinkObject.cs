@@ -15,8 +15,13 @@ namespace HalClient.Net.Parser
 		public Uri Profile { get; private set; }
 		public string Title { get; set; }
 		public string HrefLang { get; set; }
-		
-		public ILinkObject ResolveTemplated(Func<UriTemplate, string> hrefResolver)
+
+        public string Method
+        {
+            get;set;
+        }
+
+        public ILinkObject ResolveTemplated(Func<UriTemplate, string> hrefResolver)
 		{
 			if (!Templated)
 				throw new InvalidOperationException("Cannot resolve a non-Templated link");

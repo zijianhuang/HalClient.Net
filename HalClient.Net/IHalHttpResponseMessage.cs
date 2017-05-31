@@ -7,6 +7,7 @@ namespace HalClient.Net
 	{
 		HttpResponseMessage Message { get; }
 		bool IsHalResponse { get; }
-		IRootResourceObject Resource { get; }
+        bool IsJsonResponse { get; }
+        IRootResourceObject Resource { get; }
 	}
 }

@@ -17,10 +17,12 @@ namespace HalClient.Net
 			var mediaType = response.Content.Headers.ContentType.MediaType;
 
 			IsHalResponse = mediaType.Equals(MediaType.ApplicationHalPlusJson, StringComparison.OrdinalIgnoreCase);
+            IsJsonResponse = mediaType.IndexOf(MediaType.ApplicationJson, StringComparison.OrdinalIgnoreCase)>=0;
 		}
 
 		public HttpResponseMessage Message { get; private set; }
 		public bool IsHalResponse { get; }
+        public bool IsJsonResponse { get; }
 		public IRootResourceObject Resource { get; private set; }
 
 		public static async Task<IHalHttpResponseMessage> CreateAsync(HttpResponseMessage response, IHalJsonParser parser)
@@ -33,7 +35,7 @@ namespace HalClient.Net
 
 			var message = new HalHttpResponseMessage(response);
 			
-			if (message.IsHalResponse)
+			if (message.IsHalResponse || message.IsJsonResponse)
 			{
 				var content = await response.Content.ReadAsStringAsync();
 

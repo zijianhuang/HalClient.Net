@@ -7,6 +7,7 @@ namespace HalClient.Net.Parser
 	{
 		Uri Href { get; }
 		bool Templated { get; }
+        string Method { get; }
 		string Template { get; }
 		string Type { get; }
 		Uri Deprecation { get; }

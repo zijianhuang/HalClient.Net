@@ -106,6 +106,9 @@ namespace HalClient.Net.Parser
 					case "templated":
 						link.Templated = value.Equals("true", StringComparison.OrdinalIgnoreCase);
 						break;
+                    case "method":
+                        link.Method = value;
+                        break;
 					case "type":
 						link.Type = value;
 						break;
