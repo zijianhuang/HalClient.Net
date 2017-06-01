@@ -14,5 +14,6 @@ namespace HalClient.Net
 		Task<IHalHttpResponseMessage> SendAsync(HttpRequestMessage request);
 		IRootResourceObject CachedApiRootResource { get; }
 		HttpClient HttpClient { get; }
-	}
+        IHalHttpClientConfiguration Configuration { get; }
+    }
 }
