@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using HalClient.Net.Parser;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Schema;
 
 namespace HalClient.Net
 {
@@ -26,14 +29,23 @@ namespace HalClient.Net
 			_httpClient = httpClient;
 
 			Configuration = new HalHttpClientConfiguration(httpClient);
-		}
 
-		public IHalHttpClientConfiguration Configuration { get; }
+            formatter = new System.Net.Http.Formatting.JsonMediaTypeFormatter();
+            formatter.SerializerSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+        }
+
+        System.Net.Http.Formatting.JsonMediaTypeFormatter formatter;
+
+        public IHalHttpClientConfiguration Configuration { get; }
 		
 		public async Task<IHalHttpResponseMessage> PostAsync<T>(Uri uri, T data)
 		{
 			var backup = OverrideAcceptHeaders();
-			var response = await _httpClient.PostAsJsonAsync(uri, data);
+			var response = await _httpClient.PostAsync(uri, data, formatter);
 			
 			RestoreAcceptHeaders(backup);
 
@@ -43,7 +55,7 @@ namespace HalClient.Net
 		public async Task<IHalHttpResponseMessage> PutAsync<T>(Uri uri, T data)
 		{
 			var backup = OverrideAcceptHeaders();
-			var response = await _httpClient.PutAsJsonAsync(uri, data);
+			var response = await _httpClient.PutAsync(uri, data, formatter);
 
 			RestoreAcceptHeaders(backup);
 
